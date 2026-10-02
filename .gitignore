@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables & local configuration
+.env
+.env.*
+*.env
+
+# Operating System temporary files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# IDE & Editor configuration / temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing, coverage & cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary logs
+*.log

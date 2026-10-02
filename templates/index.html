@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Heart Disease Prediction System - Educational Machine Learning Demonstration using Logistic Regression.">
+    <title>Heart Disease Prediction System | Educational ML Demo</title>
+    <!-- External Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Top Navigation / Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="heart-icon">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="nav-title">Heart Disease Prediction System</h1>
+                    <p class="nav-subtitle">Educational Machine Learning Demonstration</p>
+                </div>
+            </div>
+            <div class="nav-badge">
+                <span class="pulse-dot"></span>
+                Model Active: Logistic Regression
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Educational Banner -->
+        <section class="banner-card">
+            <div class="banner-content">
+                <div class="banner-tag">Educational ML Project</div>
+                <h2>Interactive Clinical Risk Assessment Demo</h2>
+                <p>
+                    This application uses a trained Logistic Regression model fitted with standardized clinical features
+                    to estimate risk patterns based on the UCI Heart Disease dataset.
+                </p>
+            </div>
+            <!-- Quick Fill Demonstration Controls -->
+            <div class="sample-actions">
+                <span class="sample-label">Quick Test Presets:</span>
+                <button type="button" id="loadPositiveBtn" class="btn-preset btn-preset-pos" title="Load sample patient with target = 1">
+                    Load Positive Sample
+                </button>
+                <button type="button" id="loadNegativeBtn" class="btn-preset btn-preset-neg" title="Load sample patient with target = 0">
+                    Load Negative Sample
+                </button>
+                <button type="button" id="resetFormBtn" class="btn-preset btn-preset-reset" title="Clear all fields">
+                    Clear Form
+                </button>
+            </div>
+        </section>
+
+        <!-- Prediction Form Card -->
+        <section class="card-form-wrapper">
+            <form id="predictionForm" novalidate>
+                <div class="form-header">
+                    <h3>Patient Clinical Measurements (13 Features)</h3>
+                    <p>Enter the patient parameters below. Categorical metrics provide standardized selections.</p>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Feature 1: Age -->
+                    <div class="form-group">
+                        <label for="age">
+                            Age
+                            <span class="unit">(Years)</span>
+                        </label>
+                        <input type="number" id="age" name="age" min="20" max="100" step="1" placeholder="e.g. 55" required>
+                        <small class="helper-text">Patient age in years (dataset: 29–77)</small>
+                    </div>
+
+                    <!-- Feature 2: Sex -->
+                    <div class="form-group">
+                        <label for="sex">Sex</label>
+                        <select id="sex" name="sex" required>
+                            <option value="" disabled selected>Select sex...</option>
+                            <option value="1">1 = Male</option>
+                            <option value="0">0 = Female</option>
+                        </select>
+                        <small class="helper-text">Biological sex category</small>
+                    </div>
+
+                    <!-- Feature 3: Chest Pain Type (cp) -->
+                    <div class="form-group">
+                        <label for="cp">Chest Pain Type</label>
+                        <select id="cp" name="cp" required>
+                            <option value="" disabled selected>Select chest pain type...</option>
+                            <option value="0">0 = Typical Angina</option>
+                            <option value="1">1 = Atypical Angina</option>
+                            <option value="2">2 = Non-anginal Pain</option>
+                            <option value="3">3 = Asymptomatic</option>
+                        </select>
+                        <small class="helper-text">Type of chest discomfort experienced</small>
+                    </div>
+
+                    <!-- Feature 4: Resting Blood Pressure (trestbps) -->
+                    <div class="form-group">
+                        <label for="trestbps">
+                            Resting Blood Pressure
+                            <span class="unit">(mm Hg)</span>
+                        </label>
+                        <input type="number" id="trestbps" name="trestbps" min="80" max="220" step="1" placeholder="e.g. 130" required>
+                        <small class="helper-text">Resting blood pressure upon hospital admission</small>
+                    </div>
+
+                    <!-- Feature 5: Serum Cholesterol (chol) -->
+                    <div class="form-group">
+                        <label for="chol">
+                            Serum Cholesterol
+                            <span class="unit">(mg/dl)</span>
+                        </label>
+                        <input type="number" id="chol" name="chol" min="100" max="600" step="1" placeholder="e.g. 240" required>
+                        <small class="helper-text">Serum cholesterol level in mg/dl</small>
+                    </div>
+
+                    <!-- Feature 6: Fasting Blood Sugar (fbs) -->
+                    <div class="form-group">
+                        <label for="fbs">Fasting Blood Sugar &gt; 120 mg/dl</label>
+                        <select id="fbs" name="fbs" required>
+                            <option value="" disabled selected>Select fasting blood sugar...</option>
+                            <option value="0">0 = No</option>
+                            <option value="1">1 = Yes</option>
+                        </select>
+                        <small class="helper-text">Fasting blood sugar exceeding 120 mg/dl</small>
+                    </div>
+
+                    <!-- Feature 7: Resting ECG (restecg) -->
+                    <div class="form-group">
+                        <label for="restecg">Resting ECG</label>
+                        <select id="restecg" name="restecg" required>
+                            <option value="" disabled selected>Select resting ECG...</option>
+                            <option value="0">0 = Normal</option>
+                            <option value="1">1 = ST-T Wave Abnormality</option>
+                            <option value="2">2 = Left Ventricular Hypertrophy</option>
+                        </select>
+                        <small class="helper-text">Resting electrocardiographic results</small>
+                    </div>
+
+                    <!-- Feature 8: Maximum Heart Rate Achieved (thalach) -->
+                    <div class="form-group">
+                        <label for="thalach">
+                            Maximum Heart Rate
+                            <span class="unit">(bpm)</span>
+                        </label>
+                        <input type="number" id="thalach" name="thalach" min="60" max="220" step="1" placeholder="e.g. 150" required>
+                        <small class="helper-text">Peak heart rate achieved during exercise</small>
+                    </div>
+
+                    <!-- Feature 9: Exercise Induced Angina (exang) -->
+                    <div class="form-group">
+                        <label for="exang">Exercise Induced Angina</label>
+                        <select id="exang" name="exang" required>
+                            <option value="" disabled selected>Select exercise angina...</option>
+                            <option value="0">0 = No</option>
+                            <option value="1">1 = Yes</option>
+                        </select>
+                        <small class="helper-text">Angina triggered by physical exertion</small>
+                    </div>
+
+                    <!-- Feature 10: ST Depression (oldpeak) -->
+                    <div class="form-group">
+                        <label for="oldpeak">
+                            ST Depression
+                            <span class="unit">(oldpeak)</span>
+                        </label>
+                        <input type="number" id="oldpeak" name="oldpeak" min="0.0" max="7.0" step="0.1" placeholder="e.g. 1.2" required>
+                        <small class="helper-text">ST depression induced by exercise relative to rest</small>
+                    </div>
+
+                    <!-- Feature 11: ST Slope (slope) -->
+                    <div class="form-group">
+                        <label for="slope">ST Slope</label>
+                        <select id="slope" name="slope" required>
+                            <option value="" disabled selected>Select ST slope...</option>
+                            <option value="0">0 = Upsloping</option>
+                            <option value="1">1 = Flat</option>
+                            <option value="2">2 = Downsloping</option>
+                        </select>
+                        <small class="helper-text">Slope of peak exercise ST segment</small>
+                    </div>
+
+                    <!-- Feature 12: Number of Major Vessels (ca) -->
+                    <div class="form-group">
+                        <label for="ca">Number of Major Vessels</label>
+                        <select id="ca" name="ca" required>
+                            <option value="" disabled selected>Select number of vessels...</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                        <small class="helper-text">Major vessels (0–3) colored by fluoroscopy</small>
+                    </div>
+
+                    <!-- Feature 13: Thalassemia Result (thal) -->
+                    <div class="form-group">
+                        <label for="thal">Thalassemia Result</label>
+                        <select id="thal" name="thal" required>
+                            <option value="" disabled selected>Select thalassemia...</option>
+                            <option value="1">1 = Normal</option>
+                            <option value="2">2 = Fixed Defect</option>
+                            <option value="3">3 = Reversible Defect</option>
+                        </select>
+                        <small class="helper-text">Blood disorder test outcome</small>
+                    </div>
+                </div>
+
+                <!-- Submit Button and Notification Area -->
+                <div class="form-footer">
+                    <button type="submit" id="predictBtn" class="btn-primary">
+                        <span class="btn-text">Predict</span>
+                        <span class="btn-spinner" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Result Card (Populated dynamically via JavaScript) -->
+        <section id="resultCard" class="card-result" style="display: none;" aria-live="polite">
+            <div class="result-header">
+                <div id="resultIcon" class="result-icon-badge"></div>
+                <div>
+                    <h3 id="resultTitle" class="result-title">Model Prediction</h3>
+                    <p id="resultSubtitle" class="result-subtitle"></p>
+                </div>
+            </div>
+
+            <!-- Probability Meter Section -->
+            <div class="probability-section">
+                <div class="prob-labels">
+                    <span>Model probability for predicted class:</span>
+                    <strong id="probValueText">0%</strong>
+                </div>
+                <div class="progress-bar-track">
+                    <div id="probBarFill" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Educational Findings Text -->
+            <div id="resultDescription" class="result-description"></div>
+
+            <!-- Mandatory Educational Disclaimer -->
+            <div class="disclaimer-box">
+                <div class="disclaimer-icon">⚠️</div>
+                <div class="disclaimer-text">
+                    <strong>Educational Disclaimer:</strong>
+                    Educational prediction only. Not a medical diagnosis.
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Card (Populated if validation fails or server encounters an error) -->
+        <section id="errorCard" class="card-error" style="display: none;" role="alert">
+            <div class="error-header">
+                <span class="error-icon">✕</span>
+                <div>
+                    <h4 class="error-title">Request Error</h4>
+                    <p id="errorMessage" class="error-message"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Heart Disease Prediction System &bull; Machine Learning Pair Programming Project</p>
+        <p class="footer-note">Built with Flask &bull; Scikit-Learn &bull; Vanilla JavaScript</p>
+    </footer>
+
+    <!-- Custom Client-Side Script -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
